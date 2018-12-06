@@ -1,1 +1,1 @@
-## Different stuff not related to a certain project
+### Different stuff not related to a certain project
