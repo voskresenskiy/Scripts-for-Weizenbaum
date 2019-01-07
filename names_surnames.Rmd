@@ -1,0 +1,53 @@
+---
+title: "names"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# names
+
+library(rvest) 
+library(tidyverse)
+names_f = c() # here, we create blank vector to which we will be appending all vectors with names
+for(i in letters[1:length(letters)]){ # the first loop. it goes through all letters
+    page = read_html(str_c("https://www.familyeducation.com/baby-names/browse-names/first-name/",i)) # here, we read the first page for the current letter
+    hr = page %>% html_nodes(xpath = "//div//a") %>% html_attr("href") # we extract all links from the page, we need them to define how many pages relate to a letter
+    las = str_extract(tail(hr[str_detect(hr, "page")],1), "[0-9]+") # we take the last link containing word "page" and extract number, it's the last page
+      for(j in c("", 1:as.numeric(las))){ # inside the first loop, we launch the second one, now, for every letter it will go through all pages related to this letter. vector starts with "" as the first page has no any numbers
+        page_n = read_html(str_c("https://www.familyeducation.com/baby-names/browse-names/first-name/",i,"?page=", j)) # so, as you can see, we add new element to html link noting number of the page
+        names = page_n %>% html_nodes(xpath = "//div//a") %>% html_text() # extract all the texts
+        names = names[str_length(names) > 1 & !str_detect(names, "\n|Newsletters|About|Boys|Girls") ] # remove strings which have less than 1 symbol and remove strings containing "\n|Newsletters|About|Boys|Girls"
+        names_f = append(names_f, names) # append the vector with names to our initial vector
+        print(str_c(i,j)) # prinitng to make sure script works well
+   }
+}
+
+```
+
+```{r}
+# surnames
+surnames_f = c()
+for(i in letters[24:length(letters)]){
+    page = read_html(str_c("https://www.familyeducation.com/baby-names/browse-names/surname/",i))
+    hr = page %>% html_nodes(xpath = "//div//a") %>% html_attr("href")
+    las = str_extract(tail(hr[str_detect(hr, "page")],1), "[0-9]+")
+    if(!is.na(las[1])){ # if there is only one page
+      for(j in c("", 1:as.numeric(las))){
+        page_n = read_html(str_c("https://www.familyeducation.com/baby-names/browse-names/surname/",i,"?page=", j))
+        names = page_n %>% html_nodes(xpath = "//div//a") %>% html_text()
+        names = names[str_length(names) > 1 & !str_detect(names, "\n|Newsletters|About|Boys|Girls") ]
+        surnames_f = append(surnames_f, names)
+        print(str_c(i,j))
+    } 
+    } else { # in the case if letter has only one page, surnames will be collected without loop
+    page_n = read_html(str_c("https://www.familyeducation.com/baby-names/browse-names/surname/",i))
+        names = page_n %>% html_nodes(xpath = "//div//a") %>% html_text()
+        names = names[str_length(names) > 1 & !str_detect(names, "\n|Newsletters|About|Boys|Girls") ]
+        surnames_f = append(surnames_f, names)
+        print(i)
+  }
+}
+```
+

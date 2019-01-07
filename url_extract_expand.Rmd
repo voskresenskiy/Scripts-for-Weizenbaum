@@ -1,0 +1,46 @@
+---
+title: "url_extract_expand"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# first of all, we need to install needed packages
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("httr")
+library(httr)
+install.packages("devtools")
+library(devtools)
+install.packages("pbapply")
+library(pbapply)
+```
+
+```{r}
+twitter = read.csv("twit.csv") # uploading data
+url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+" # create regular expression for urls
+urls <- str_extract_all(twitter$text, url_pattern) # extract url to list
+urls <- bind_rows(lapply(urls,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)})) # list to df
+urls_id = cbind(twitter[,1], urls)
+colnames(urls_id) = c("id", str_c("url", c(1:5))) # join twit id and urls
+urls_id$id = as.character(urls_id$id)
+urls_id <- urls_id %>% gather(id_twit, url_twit, -id) # getting df where ids are duplicated (where they have more than one url) and all urls are in one column
+urls_id$id_twit = NULL
+```
+
+```{r}
+source_url("https://raw.githubusercontent.com/voskresenskiy/work_scripts/master/functions_parsing.R")
+df = url_extractor(unique(urls_id$url_twit))
+final = left_join(urls_id, df, by = c("url_twit" = "url"))
+final = na.omit(final)
+final = unique(final)
+```
+
+
+```{r}
+errors = final %>% filter(str_detect(final$expanded_url, "ERROR")) # dataset with errors
+expanded_urls = final %>% filter(!(str_detect(final$expanded_url, "ERROR"))) # dataset with good urls
+write.csv(expanded_urls, "expanded_urls.csv") # save dataset with good urls
+write.csv(errors, "errors.csv") # save dataset with errors
+```
