@@ -13,3 +13,10 @@ url_extractor = function(x){
   rownames(df) = c(1:nrow(df))
   return(df)
 }
+               
+domain = function(x) {
+  tryCatch({
+    return(strsplit(gsub("http://|https://|www\\.", "", x), "/")[[c(1, 1)]])
+  }, error=function(e){
+    return(paste("ERROR", conditionMessage(e)))})
+}
