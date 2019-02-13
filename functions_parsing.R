@@ -1,6 +1,6 @@
 url_expander = function(x){
   tryCatch({
-    get_object = withTimeout(GET(x), timeout = 5, onTimeout = "error")
+    get_object = withTimeout(GET(x), timeout = 60, onTimeout = "error")
     return(get_object$url)
   }, error=function(e){
     return(paste("ERROR", conditionMessage(e)))})
