@@ -17,7 +17,7 @@ url_extractor = function(x){
 domain = function(x) {
   if (str_detect(x, '^htt.*://(facebook.com/|twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/|www.youtube.com/).*')){
     extr = str_extract(x, '(facebook.com/|twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/|www.youtube.com/).*?($|/|\\?)')[[1]]
-    return(extr %>% str_replace('\\/$|\\/p', '') %>% str_replace('\\/$', ''))
+    return(extr %>% str_replace('\\/$|\\/p|\\?$', '') %>% str_replace('\\/$', ''))
   } else {
     tryCatch({
       return(strsplit(gsub("http://|https://|www\\.", "", x), "/")[[c(1, 1)]])
