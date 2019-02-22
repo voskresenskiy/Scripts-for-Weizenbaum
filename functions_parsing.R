@@ -15,8 +15,8 @@ url_extractor = function(x){
 }
                
 domain = function(x) {
-  if (str_detect(x, '^htt.*://(twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/).*')){
-    extr = str_extract(x, '(twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/).*?($|/)')[[1]]
+  if (str_detect(x, '^htt.*://(twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/|youtube.com).*')){
+    extr = str_extract(x, '(twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/youtube.com).*?($|/)')[[1]]
     return(extr %>% str_replace('\\/$|\\/p', '') %>% str_replace('\\/$', ''))
   } else {
     tryCatch({
