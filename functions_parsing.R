@@ -19,8 +19,8 @@ domain = function(x) {
     extr = str_extract(x, '(www.facebook.com/events/|facebook.com/|twitter.com/|www.facebook.com/|www.instagram.com/|vk.com/).*?($|/|\\?)')[[1]]
     return(extr %>% str_replace('\\/$|\\/p$|\\?$', ''))
   } else if (str_detect(x, '^htt.*://(www.youtube.com/channel/|www.youtube.com/user/|www.youtube.com/).*')){
-    extr = str_extract(x, '(www.youtube.com/channel/|www.youtube.com/user/|www.youtube.com/).*?($|/)')[[1]]
-    return(extr %>% str_replace('\\/$', ''))
+    extr = str_extract(x, '(www.youtube.com/channel/|www.youtube.com/user/|www.youtube.com/).*?($|/|&)')[[1]]
+    return(extr %>% str_replace('\\/$|&', ''))
   } else {
     tryCatch({
       return(strsplit(gsub("http://|https://|www\\.", "", x), "/")[[c(1, 1)]])
