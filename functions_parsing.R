@@ -33,7 +33,6 @@ split_gather = function(df, col, sep = ','){
     #' the function takes column of the dataframe in which values are separated strings (for instance, one of the values of the column can be 
     #' "george michael, george clooney etc"). the function separates these values and rewrites them as a new variable, where each value 
     #' makes new row. after that, the function gathers (check package "tidyr") these values.
-    #'
     #' inputs: df (required), column (required), separator (optional, comma is taken as a default)
     #' output: dataframe with new variable containing separated values; all other columns are duplicated
   x = str_split(as.character(df[,col]), ',') 
