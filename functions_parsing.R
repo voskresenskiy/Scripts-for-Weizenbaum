@@ -35,7 +35,7 @@ split_gather = function(df, col, sep = ','){
     #' makes new row. after that, the function gathers (check package "tidyr") these values.
     #' inputs: df (required), column (required), separator (optional, comma is taken as a default)
     #' output: dataframe with new variable containing separated values; all other columns are duplicated
-  x = str_split(as.character(df[,col]), ',') 
+  x = str_split(as.character(df[,col]), sep) 
   x = bind_rows(lapply(x, function(x) as.data.frame(unlist(t(x)))))
   colnames(x) = str_c('variable_agg', c(1:ncol(x)))
   new_df = cbind(df, x) 
