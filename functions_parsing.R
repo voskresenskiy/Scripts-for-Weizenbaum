@@ -48,7 +48,7 @@ clean_links = function(df, col){
   new_df = df[str_length(df[,col]) > 10 &
                 !is.na(df[,col]) &
                 str_detect(df[,col], 'htt.+') &
-                !str_detect(df[,col], 'mailto|\\=htt.+|share=|whatsapp|viber|app_scoped_user_id|vk.com/share.php|^www.instagram.com/p$|www.instagram.com/explore|photo.php|www.facebook.com/about|www.facebook.com/help''), ]
+                !str_detect(df[,col], 'mailto|\\=htt.+|share=|whatsapp|viber|app_scoped_user_id|vk.com/share.php|^www.instagram.com/p$|www.instagram.com/explore|photo.php|www.facebook.com/about|www.facebook.com/help'), ]
   new_df[, col] = str_replace_all(new_df[, col], 'de-de.facebook|sv-se.facebook|en-gb.facebook', 'facebook')
   new_df[, col] = str_replace_all(new_df[, col], 'de-de.facebook|sv-se.facebook|en-gb.facebook', 'facebook')
   new_df[, col] = str_replace_all(new_df[, col], 'hashtag/|groups/', '')
