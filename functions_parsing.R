@@ -43,3 +43,10 @@ split_gather = function(df, col, sep = ','){
   new_df$identificator = NULL
   return(new_df)
 }
+
+clean_links = function(df, col){
+  new_df = df[str_length(df[,col]) > 10 &
+                  !is.na(df[,col]) &
+                  str_detect(df[,col], 'htt.+') &
+                  !str_detect(df[,col], 'mailto|\\=htt.+|share='), ]
+}                      
