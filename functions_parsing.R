@@ -1,6 +1,6 @@
 url_expander = function(x){
   tryCatch({
-    get_object = withTimeout(GET(x), timeout = 60, onTimeout = "error")
+    x = withTimeout(GET(x), timeout = 60, onTimeout = "error")
     if(str_detect(get_object$url, 'unsupportedbrowser')){
       return(x$all_headers[[1]]$headers$location)
     } else {
