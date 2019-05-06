@@ -11,6 +11,9 @@ url_expander = function(x){
 }
 
 url_extractor = function(x){
+  library(httr)
+  library(R.utils)
+  library(pbapply)
   z = pbsapply(x, function(y) url_expander(y))
   df = as.data.frame(cbind(x,z))
   colnames(df) = c("url", "expanded_url")
