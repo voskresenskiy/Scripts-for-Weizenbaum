@@ -32,7 +32,7 @@ split_gather = function(df, col, sep = ','){
   x = bind_rows(lapply(x, function(x) as.data.frame(unlist(t(x)))))
   colnames(x) = str_c('variable_agg', c(1:ncol(x)))
   new_df = cbind(df, x) 
-  new_df = gather(new_df, identificator,link_splitted, colnames(new_df)[str_detect(colnames(new_df), 'variable_agg')])
+  new_df =  pivot_longer(new_df, colnames(new_df)[str_detect(colnames(new_df), 'variable_agg')], names_to = 'identificator')
   new_df$identificator = NULL
   return(new_df)
 }
